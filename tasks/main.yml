@@ -1,0 +1,39 @@
+---
+# tasks file for ansible-role-rubrik-cloudout
+- name: Create the S3 Bucket
+  aws_s3:
+    bucket: "{{ s3_bucket_name }}"
+    region: "{{ aws_region }}"
+    mode: create
+
+- name: Create the a Security Policy for the S3 Bucket
+  iam_managed_policy:
+    policy_name: "{{ s3_security_policy_name }}"
+    policy_description: "{{ s3_security_policy_description }}"
+    policy: " {{ lookup( 'template', 's3_security_policy.json.j2', convert_data=False) }}  "
+    state: present
+  register: aws
+
+- name: Create a IAM User with Programatic Access
+  iam:
+    iam_type: user
+    name: "{{ iam_user }}"
+    state: present
+    access_key_state: create
+  register: iam
+  when: create_new_user
+
+- name: Attach the Security Policy to the IAM User
+  iam_user:
+    name: "{{ iam_user }}"
+    managed_policy: "{{ aws.policy.arn }}"
+    state: present
+  
+- debug:
+    msg: Access Key - {{ iam.user_meta.access_keys[0].access_key_id }}
+  when: create_new_user
+
+- debug:
+    msg: Secret Key - {{ iam.user_meta.access_keys[0].secret_access_key }}
+  when: create_new_user
+  
