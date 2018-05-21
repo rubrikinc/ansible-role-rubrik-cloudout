@@ -28,12 +28,17 @@
     name: "{{ iam_user }}"
     managed_policy: "{{ aws.policy.arn }}"
     state: present
-  
+
+- set_fact: 
+     key: "{{ iam.user_meta.access_keys[0] }}"
+
 - debug:
-    msg: Access Key - {{ iam.user_meta.access_keys[0].access_key_id }}
+    msg: Access Key - {{ key.access_key_id }}
   when: create_new_user
 
 - debug:
-    msg: Secret Key - {{ iam.user_meta.access_keys[0].secret_access_key }}
-  when: create_new_user
+    msg: Secret Key - {{ key.secret_access_key }}
+  when: "create_new_user and 'secret_access_key' in key"
+
+
   

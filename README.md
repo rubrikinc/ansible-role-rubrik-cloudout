@@ -38,11 +38,29 @@ Role Variables
 |---|---|
 | s3_bucket_arn  | The dynamically generated ARN of the S3 bucket provided in the `s3_bucket_name` variable and used in the `s3_security_policy.json.j2` template.  |
 
+**Output**
+
+When `create_new_user` is set to the default value of `true` the new IAM users Access and Secret Key will be provided at the end of the Playbook. Please note that the Secret key will only be provided during the Playbook run where it is first created.
+
+
+```python
+ok: [localhost] => {
+    "msg": "Access Key - AKIAQQD3AFGPKHCV8L9Q"
+}
+```
+
+```python
+ok: [localhost] => {
+    "msg": "Secret Key - 5a3E4bCIc87CpQQDimkNdIi4ree2CiASDFh1Uh8H"
+}
+```
+
+
 
 Dependencies
 ------------
 
-N/A
+n/a
 
 Example Playbook
 ----------------
