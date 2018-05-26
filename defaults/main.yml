@@ -1,9 +1,9 @@
 ---
 # defaults file for ansible-role-rubrik-cloudout
 # S3 Security Policy
-s3_security_policy_name: rubrik_cloudout
+s3_security_policy_name: rubrik-cloudout
 s3_security_policy_description: "Security policy used for Rubrik CloudOut."
 
 # IAM User
 create_new_user: true
-iam_user: rubrik-cloudout
+iam_user: rubrik
